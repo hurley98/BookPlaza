@@ -1,13 +1,13 @@
 <?php
     // Conexiunea cu baza de date
-    include 'conn.php';
+    include '../conn.php';
 
     if(isset($_SESSION['user']))
     {
         $uid = $_SESSION['user'];
     }
 
-    $target_dir = "images//" . $uid . "//";
+    $target_dir = "..//images//" . $uid . "//";
 
     if(!is_dir($target_dir))
     {

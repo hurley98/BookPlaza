@@ -48,3 +48,13 @@
     </form>
   </div>
 </nav>
+<div class="loader" style="z-index: 999; position: absolute;left: 0; right: 0; background-color:white">
+  <center>
+    <img src="img/loader.gif"/>
+  </center>
+</div>
+<script>
+  $(document).ready(() => {
+    $('.loader').hide();
+  })
+</script>
