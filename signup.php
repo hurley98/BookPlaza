@@ -20,6 +20,9 @@
             <input type="email" class="form-control" name="email" placeholder="name@example.com">
         </div>
         <div class="form-group">
+            <input type="text" class="form-control" name="username" placeholder="johndoe">
+        </div>
+        <div class="form-group">
             <input type="password" class="form-control" name="password" placeholder="Enter your password">
         </div>
         <div class="form-group">

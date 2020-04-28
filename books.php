@@ -40,11 +40,11 @@ $uid = $_SESSION['user'];
                     {
                         echo '
                             <tr>
-                                <td style="text-align: center"><img src="images//'.$book['addedby'].'//'. $book['coverimage'] .'" style="width: 100px"/></td>
+                                <td style="text-align: center"><a href="book.php?bid='. $book['id'] .'"><img src="images//'.$book['addedby'].'//'. $book['coverimage'] .'" style="width: 100px"/></a></td>
                                 <td>'. $book['title'] .'</td>
                                 <td>'. $book['author'] .'</td>
                                 '; 
-                                if($user->isLoggedIn() && $user->isAdmin($uid)) { echo "<td><center><a href='#' id=editB" . $book['id'] . " class='btn btn-info'>Edit</a>&nbsp;<a href='#' class='btn btn-danger'>Remove</a></center></td>"; }
+                                if($user->isLoggedIn() && $user->isAdmin($uid)) { echo "<td><center><a href='#' id=editB" . $book['id'] . " class='btn btn-info'>Edit</a>&nbsp;<a href='#' id='removeB".$book['id']."' class='btn btn-danger'>Remove</a></center></td>"; }
                         echo '
                             </tr>
                         ';
@@ -68,6 +68,9 @@ $uid = $_SESSION['user'];
 
                                         <div class="form-group">
                                             <input type="text" class="form-control" name="newAuthor" placeholder="Schimba autorul.." value="<?php echo $book['author']; ?>">
+                                        </div>
+                                        <div class="form-group">
+                                            <textarea class="form-control" name="newShortDesc" placeholder="Enter a new description"><?php echo $book['shortdesc']; ?></textarea>
                                         </div>
                                         <center>
                                             <input type="submit" class="btn btn-info" value="Editeaza"/>
@@ -94,17 +97,62 @@ $uid = $_SESSION['user'];
                                     </script>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary">Save changes</button>
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Remove Modal -->
+                        <div class="modal fade" id="removeModal<?php echo $book['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-danger" id="exampleModalLabel">Atenție</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p class="text-center">Ești sigur că vrei să ștergi?</p>
+                                <center>
+                                    <input type="text" name="bidBook" id="bookb<?php echo $book['id']; ?>" value="<?php echo $book['id']; ?>" hidden />
+                                    <a href="#" id="da<?php echo $book['id'];?>" class="btn btn-danger">Da</a> | <button class="btn btn-success" data-dismiss="modal">Nu</button>
+                                </center>
+                            </div>
+                            </div>
+                        </div>
                         </div>
                         <script>
                         $(document).ready(() => {
                             $('#editB<?php echo $book['id']; ?>').click((e) => {
                                 e.preventDefault();
                                 $('#editM<?php echo $book['id'];?>').modal('show');
+                            });
+
+                            $('#removeB<?php echo $book['id']; ?>').click((e) => {
+                                e.preventDefault();
+                                $('#removeModal<?php echo $book['id']; ?>').modal('show');
+                            });
+
+                            $('#da<?php echo $book['id']; ?>').click((e) => {
+                                e.preventDefault();
+
+                                $.ajax
+                                ({
+                                    type: 'POST',
+                                    url: 'Actions/removeBook.php',
+                                    data: { bidBook: $('#bookb<?php echo $book['id']; ?>').val() },
+                                    success: (response) => {
+                                        //alert (response);
+                                        if(response == 1)
+                                        {
+                                            // hide the modal
+                                            $('#removeModal<?php echo $book['id']; ?>').modal('hide');
+                                            location.reload(true);
+                                        }
+                                    }
+                                });
                             });
                         });
                         
@@ -139,6 +187,9 @@ $uid = $_SESSION['user'];
                         <input type="text" name="author" id="authorBook" class="form-control" placeholder="Enter the author..">
                     </div>
                     <div class="form-group">
+                        <textarea type="text" name="shortDesc" id="descrBook" class="form-control" placeholder="Enter a description.."></textarea>
+                    </div>
+                    <div class="form-group">
                         <input type="file" name="fileToUpload" id="imgTU" />
                     </div>
                     <center>
@@ -147,7 +198,6 @@ $uid = $_SESSION['user'];
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Save changes</button>
                 <button type="button" class="btn btn-secondary closeButton" data-dismiss="modal">Close</button>
             </div>
             </div>
@@ -175,8 +225,10 @@ $(document).ready(function() {
         var files = $('#imgTU')[0].files[0];
         var title = $('#titleBook').val();
         var author = $('#authorBook').val();
+        var description = $('#descrBook').val();
         fd.append('title', title);
         fd.append('author', author);
+        fd.append('description', description);
         fd.append('fileToUpload', files);
 
 

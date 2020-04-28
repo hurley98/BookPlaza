@@ -6,10 +6,12 @@
         $title = $_POST['newTitle'];
         $author = $_POST['newAuthor'];
         $bookId = $_POST['bookid'];
-        $statement = $conn->prepare("UPDATE books SET title=:newTitle, author=:newAuthor WHERE id=:bookId");
+        $newDescription = $_POST['newShortDesc'];
+        $statement = $conn->prepare("UPDATE books SET title=:newTitle, author=:newAuthor, shortdesc=:newshortdesc WHERE id=:bookId");
         $statement->execute(array(
             ':newTitle' => $title,
             ':newAuthor' => $author,
+            ':newshortdesc' => $newDescription,
             ':bookId' => $bookId
         ));
 
