@@ -187,6 +187,28 @@ $uid = $_SESSION['user'];
                         <input type="text" name="author" id="authorBook" class="form-control" placeholder="Enter the author..">
                     </div>
                     <div class="form-group">
+                        <select class="form-control genres">
+                            <!-- Afisarea din baza de date -->
+                            <option selected>---</option>
+                            <?php 
+                                $genreStatement = $conn->prepare("SELECT * FROM genres WHERE active=1");
+                                $genreStatement->execute();
+
+                                $genreRows = $genreStatement->fetchAll();
+
+                                if($genreStatement->rowCount() > 0)
+                                {
+                                    foreach($genreRows as $genreRow) {
+                                    ?>
+                                        <option value="<?php echo $genreRow['id']; ?>"><?php echo $genreRow['value']; ?></option>
+                                    <?php
+                                    }
+                                }
+                            ?>
+                            
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <textarea type="text" name="shortDesc" id="descrBook" class="form-control" placeholder="Enter a description.."></textarea>
                     </div>
                     <div class="form-group">
@@ -208,8 +230,6 @@ $uid = $_SESSION['user'];
 
 <script>
 $(document).ready(function() {
-
-
     $('#example').DataTable();
 
    
@@ -217,6 +237,7 @@ $(document).ready(function() {
         e.preventDefault();
         $('#addBook').fadeIn(300).modal('show');
     });
+$('select.genres').change(function() {
 
     $('#uploadForm').on('submit', (e) => {
         e.preventDefault();
@@ -230,6 +251,10 @@ $(document).ready(function() {
         fd.append('author', author);
         fd.append('description', description);
         fd.append('fileToUpload', files);
+
+            var selectedGenre = $(this).children("option:selected").val();
+            fd.append('genre', selectedGenre);
+            
 
 
         $.ajax
@@ -247,11 +272,14 @@ $(document).ready(function() {
                     // sa apara un model de success!
                     alert("Success!");
                     $('#addBook').modal('hide');
+                    location.reload(true);
                 }
             }
         });
 
     });
+}); 
+
 
   
 } );

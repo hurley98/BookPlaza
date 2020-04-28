@@ -68,10 +68,11 @@
             //echo "title: " . $_POST['title'];
 
             // Insert image path into database
-            $insertStatement = $conn->prepare("INSERT INTO books(title, coverimage, shortdesc, author, addedby) VALUES (:title, :coverimage, :description, :author, :addedby)");
+            $insertStatement = $conn->prepare("INSERT INTO books(title, coverimage, genre, shortdesc, author, addedby) VALUES (:title, :coverimage, :genre, :description, :author, :addedby)");
             $insertStatement->execute(array(
                 ':title' => $_POST['title'],
                 ':coverimage' => $bookImage,
+                ':genre' => $_POST['genre'],
                 ':description' => $_POST['description'],
                 ':author' => $_POST['author'],
                 ':addedby' => $uid
