@@ -1,7 +1,6 @@
 <?php
     include 'header.inc.php';
 ?>
-<!-- TODO MOVE THIS INTO CSS FILE -->
 <div class="container">
     <form style="width: 400px; left: 0; right: 0; margin: 0 auto; margin-top:20px" id="loginForm">
         <h1 class="text-center">Welcome back!</h1>

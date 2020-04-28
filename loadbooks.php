@@ -4,7 +4,6 @@
 
     $genreId = $_GET['gid'];
     
-
     try
     {
         $statement = $conn->prepare("SELECT * FROM books WHERE genre=:genreid");

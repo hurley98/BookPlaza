@@ -78,7 +78,7 @@ INSERT INTO `genres` (`id`, `value`, `active`) VALUES
 (13, 'Fantasy', 1),
 (14, 'Crime', 1),
 (15, 'Comic book', 1),
-(16, 'Children\'s', 1),
+(16, "Children\'s", 1),
 (17, 'Action and adventure', 1),
 (18, 'Alternate history\r\n', 1);
 

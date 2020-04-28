@@ -20,7 +20,7 @@
                     foreach($rows as $row)
                     {
                         ?>
-                        <option value="<?php echo $row['id'];?>"><?php echo $row['value']; ?></option>
+                            <option value="<?php echo $row['id'];?>"><?php echo $row['value']; ?></option>
                         <?php
                     }
                 }
@@ -44,7 +44,6 @@
 
 <div class="container">
     <div class="row data text-center"></div>
-    
 </div>
 <?php
     include 'footer.inc.php';

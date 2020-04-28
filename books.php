@@ -63,13 +63,16 @@ $uid = $_SESSION['user'];
                                     <form id="formEdit<?php echo $book['id']; ?>">
                                         <input type="number" name="bookid" value="<?php echo $book['id']; ?>" hidden/>
                                         <div class="form-group">
+                                            <label>Title</label>
                                             <input type="text" class="form-control" name="newTitle" placeholder="Schimba titlul.." value="<?php echo $book['title']; ?>">
                                         </div>
 
                                         <div class="form-group">
+                                            <label>Author</label>
                                             <input type="text" class="form-control" name="newAuthor" placeholder="Schimba autorul.." value="<?php echo $book['author']; ?>">
                                         </div>
                                         <div class="form-group">
+                                            <label>Description</label>
                                             <textarea class="form-control" name="newShortDesc" placeholder="Enter a new description"><?php echo $book['shortdesc']; ?></textarea>
                                         </div>
                                         <center>
@@ -181,12 +184,15 @@ $uid = $_SESSION['user'];
                 <!-- Form with upload -->
                 <form enctype='multipart/form-data' method="POST" style="width: 80%;" id="uploadForm">
                     <div class="form-group">
+                        <label>Title</label>
                         <input type="text" name="title" id="titleBook" class="form-control" placeholder="Enter the title..">
                     </div>
                     <div class="form-group">
+                        <label>Author</label>
                         <input type="text" name="author" id="authorBook" class="form-control" placeholder="Enter the author..">
                     </div>
                     <div class="form-group">
+                        <label>Genre</label>
                         <select class="form-control genres">
                             <!-- Afisarea din baza de date -->
                             <option selected>---</option>
@@ -209,6 +215,7 @@ $uid = $_SESSION['user'];
                         </select>
                     </div>
                     <div class="form-group">
+                        <label>Description</label>
                         <textarea type="text" name="shortDesc" id="descrBook" class="form-control" placeholder="Enter a description.."></textarea>
                     </div>
                     <div class="form-group">

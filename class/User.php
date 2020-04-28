@@ -6,6 +6,7 @@ class User
         $this->db = $conn;
     }
 
+
     
 
     // Registration
@@ -17,10 +18,19 @@ class User
             $verifyEmailStatement = $this->db->prepare("SELECT email FROM users WHERE email=:email");
             $verifyEmailStatement->bindParam(':email', $email, PDO::PARAM_STR);
             $verifyEmailStatement->execute();
-            // TODO Username verification
+
+            $verifyUsername = $this->db->prepare("SELECT username FROM users WHERE username=:username");
+            $verifyUsername->bindParam(':username', $username, PDO::PARAM_STR);
+            $verifyUsername->execute();
+
+
             if($verifyEmailStatement->rowCount() > 0)
             {
                 // Daca este adevarat, mail-ul exista deja in baza de data
+                return false;
+            }
+            elseif($verifyUsername->rowCount() > 0)
+            {
                 return false;
             }
             else
@@ -58,6 +68,7 @@ class User
                 $statement->execute();
 
                 $row = $statement->fetch(PDO::FETCH_ASSOC);
+
                 if($statement->rowCount() > 0)
                 {
                     if(password_verify($password, $row['password']))
@@ -94,6 +105,7 @@ class User
             $statement = $this->db->prepare("SELECT * FROM users WHERE id=:uid");
             $statement->bindParam(':uid', $uid, PDO::PARAM_INT);
             $statement->execute();
+
             $row = $statement->fetch(PDO::FETCH_ASSOC);
 
             if($statement->rowCount() > 0)
@@ -110,7 +122,7 @@ class User
         }
     }
 
-    // Redirect
+    // Redirect 
     public function redirect($url)
     {
         header('Location: ' . $url);

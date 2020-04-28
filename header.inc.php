@@ -56,5 +56,5 @@
 <script>
   $(document).ready(() => {
     $('.loader').hide();
-  })
+  });
 </script>
