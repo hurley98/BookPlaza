@@ -90,6 +90,29 @@ class User
         header('Location: ' . $url);
     }
 
+    // Admin check
+    public function isAdmin($uid)
+    {
+        try 
+        {
+            $statement = $this->db->prepare("SELECT * FROM users WHERE userrole=2");
+            $statement->execute();
+
+            $row = $statement->fetch(PDO::FETCH_ASSOC);
+            if($statement->rowCount() > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        } catch(PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
     //Logout
     public function logout($sess)
     {

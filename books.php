@@ -1,8 +1,18 @@
-<?php include 'header.inc.php'; ?>
+<?php include 'header.inc.php'; 
+$uid = $_SESSION['user'];
+?>
 
 <div class="container">
     <div class="bookPart" style="width: 80%; left: 0; right: 0; margin: 0 auto; margin-top: 50px; padding: 10px">
-        <a href="#" id="addBookButton" style="margin-bottom: 20px" class="btn btn-success">Add</a>
+        <?php 
+            
+            if($user->isLoggedIn() && $user->isAdmin($uid))
+            {
+            ?>
+                <a href="#" id="addBookButton" style="margin-bottom: 20px" class="btn btn-success">Add</a>
+            <?php
+            }
+        ?>
         <table id="example" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>
@@ -11,14 +21,102 @@
                     <th>Author</th>
                     <?php
                         // if the user is logged in and admin, by now we check if the user is logged in
-                        if($user->isLoggedIn())
+                        if($user->isLoggedIn() && $user->isAdmin($uid))
                         {
                             echo '<th>Actions</th>';
                         }
                     ?>  
                 </tr>
             </thead>
-            <tbody id="dataFetched"></tbody>
+            <tbody>
+            <?php
+                // make a simple selection
+                try
+                {
+                    $statement = $conn->prepare("SELECT * FROM books");
+                    $statement->execute();
+                    $books = $statement->fetchAll();
+                    foreach($books as $book)
+                    {
+                        echo '
+                            <tr>
+                                <td style="text-align: center"><img src="images//'.$book['addedby'].'//'. $book['coverimage'] .'" style="width: 100px"/></td>
+                                <td>'. $book['title'] .'</td>
+                                <td>'. $book['author'] .'</td>
+                                '; 
+                                if($user->isLoggedIn() && $user->isAdmin($uid)) { echo "<td><center><a href='#' id=editB" . $book['id'] . " class='btn btn-info'>Edit</a>&nbsp;<a href='#' class='btn btn-danger'>Remove</a></center></td>"; }
+                        echo '
+                            </tr>
+                        ';
+
+                        ?>
+                        <div class="modal fade" tabindex="-1" role="dialog" id="editM<?php echo $book['id']; ?>">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Editeaza cartea: <?php echo $book['title']; ?></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="formEdit<?php echo $book['id']; ?>">
+                                        <input type="number" name="bookid" value="<?php echo $book['id']; ?>" hidden/>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="newTitle" placeholder="Schimba titlul.." value="<?php echo $book['title']; ?>">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="newAuthor" placeholder="Schimba autorul.." value="<?php echo $book['author']; ?>">
+                                        </div>
+                                        <center>
+                                            <input type="submit" class="btn btn-info" value="Editeaza"/>
+                                        </center>
+                                    </form>
+
+                                    <script>
+                                    $(document).ready(() => {
+                                        $('#formEdit<?php echo $book['id']; ?>').on('submit', (e) => {
+                                            e.preventDefault();
+
+                                            // Ajax
+                                            $.ajax
+                                            ({
+                                                type: 'POST',
+                                                url: 'Actions/editBook.php',
+                                                data: $('#formEdit<?php echo $book['id']; ?>').serialize(),
+                                                success: (response) => {
+                                                    alert(response);
+                                                }
+                                            });
+                                        });
+                                    });
+                                    </script>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                        $(document).ready(() => {
+                            $('#editB<?php echo $book['id']; ?>').click((e) => {
+                                e.preventDefault();
+                                $('#editM<?php echo $book['id'];?>').modal('show');
+                            });
+                        });
+                        
+                        </script>
+                        <?php
+                    }
+                } catch(PDOException $e)
+                {
+                    echo $e->getMessage();
+                }
+            ?>
+            </tbody>
         </table>
     </div>
     <!-- Modal -->
@@ -35,10 +133,10 @@
                 <!-- Form with upload -->
                 <form enctype='multipart/form-data' method="POST" style="width: 80%;" id="uploadForm">
                     <div class="form-group">
-                        <input type="text" name="title" id="title" class="form-control" placeholder="Enter the title..">
+                        <input type="text" name="title" id="titleBook" class="form-control" placeholder="Enter the title..">
                     </div>
                     <div class="form-group">
-                        <input type="text" name="author" id="author" class="form-control" placeholder="Enter the author..">
+                        <input type="text" name="author" id="authorBook" class="form-control" placeholder="Enter the author..">
                     </div>
                     <div class="form-group">
                         <input type="file" name="fileToUpload" id="imgTU" />
@@ -60,13 +158,11 @@
 
 <script>
 $(document).ready(function() {
+
+
     $('#example').DataTable();
-    $('#dataFetched').load("Actions/fetchBooks.php");
 
-    window.setInterval(function() {
-        $('#dataFetched').load("Actions/fetchBooks.php");
-    }, 1000);
-
+   
     $('#addBookButton').click((e) => {
         e.preventDefault();
         $('#addBook').fadeIn(300).modal('show');
@@ -77,6 +173,10 @@ $(document).ready(function() {
 
         var fd = new FormData();
         var files = $('#imgTU')[0].files[0];
+        var title = $('#titleBook').val();
+        var author = $('#authorBook').val();
+        fd.append('title', title);
+        fd.append('author', author);
         fd.append('fileToUpload', files);
 
 
@@ -88,8 +188,14 @@ $(document).ready(function() {
             processData: false,
             cache: false,
             contentType: false,
-            success: (data) => {
-                alert(data);
+            success: (response) => {
+                //alert(data);
+                if(response == 1)
+                {
+                    // sa apara un model de success!
+                    alert("Success!");
+                    $('#addBook').modal('hide');
+                }
             }
         });
 

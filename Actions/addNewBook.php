@@ -23,40 +23,41 @@
     $check = getimagesize($_FILES['fileToUpload']['tmp_name']);
     if($check !== false)
     {
-        echo "File is an image - " . $check['mime'];
+       // echo "File is an image - " . $check['mime'];
         $uploadOk = 1;
     }
     else
     {
-        echo "File is not an image";
+       // echo "File is not an image";
         $uploadOk = 0;
     }
 
     // check if the file already exists
     if(file_exists($target_file))
     {
-        echo "Sorry, file already exists.";
+        //echo "Sorry, file already exists.";
         $uploadOk = 0;
     }
 
     // Check file size
     if($_FILES['fileToUpload']['size'] > 50000000)
     {
-        echo "Sorry, your file is too large.";
+        //echo "Sorry, your file is too large.";
         $uploadOk = 0;
     }
 
     // Allow certain file formats
     if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif")
     {
-        echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+        //echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
         $uploadOk = 0;
     }
 
     // Check if $uploadOk is set to 0 by an error
     if($uploadOk == 0)
     {
-        echo "Sorry, your file was not uploaded.";
+        //echo "Sorry, your file was not uploaded.";
+        echo 0;
     }
     else
     {
@@ -64,6 +65,7 @@
         if(move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $target_file))
         {
             $bookImage = basename($_FILES['fileToUpload']['name']);
+            //echo "title: " . $_POST['title'];
 
             // Insert image path into database
             $insertStatement = $conn->prepare("INSERT INTO books(title, coverimage, author, addedby) VALUES (:title, :coverimage, :author, :addedby)");
@@ -74,7 +76,7 @@
                 ':addedby' => $uid
             ));
 
-            echo "INSERTED, VICTORY!";
+            echo 1;
         }
     }
 ?> 
