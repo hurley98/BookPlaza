@@ -34,15 +34,12 @@
         <a class="nav-link" href="books">Books</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="categories">Categories</a>
+        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"><?php echo $user->getUsername(@$_SESSION['user']); ?></a>
       </li>
       <li class="nav-item">
         <?php 
             echo ($user->isLoggedIn()) ? "<a class='nav-link' href='logout'>Logout</a>" : "<a class='nav-link' href='login'>Login</a>";
         ?>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"><?php echo $user->getUsername(@$_SESSION['user']); ?></a>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0" method="post" action="search" >

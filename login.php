@@ -32,7 +32,7 @@
                 success: (response) => {
                     if(response == 1)
                     {
-                        location.href = "home";
+                        location.href = "index";
                     }
                 }
             });

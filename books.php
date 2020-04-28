@@ -212,7 +212,12 @@ $uid = $_SESSION['user'];
                         <textarea type="text" name="shortDesc" id="descrBook" class="form-control" placeholder="Enter a description.."></textarea>
                     </div>
                     <div class="form-group">
+                        <label>JPG, JPEG, PNG</label><br />
                         <input type="file" name="fileToUpload" id="imgTU" />
+                    </div>
+                    <div class="form-group">
+                        <label>PDF</label><br />
+                        <input type="file" name="fileToUploadPdf" id="pdfTU" />
                     </div>
                     <center>
                         <input type="submit" class="btn btn-secondary" id="uploadCoverImage" value="Add" />
@@ -244,6 +249,7 @@ $('select.genres').change(function() {
 
         var fd = new FormData();
         var files = $('#imgTU')[0].files[0];
+        var pdfFile = $('#pdfTU')[0].files[0];
         var title = $('#titleBook').val();
         var author = $('#authorBook').val();
         var description = $('#descrBook').val();
@@ -251,6 +257,7 @@ $('select.genres').change(function() {
         fd.append('author', author);
         fd.append('description', description);
         fd.append('fileToUpload', files);
+        fd.append('fileToUploadPdf', pdfFile);
 
             var selectedGenre = $(this).children("option:selected").val();
             fd.append('genre', selectedGenre);

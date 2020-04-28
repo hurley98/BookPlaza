@@ -31,8 +31,18 @@
                     <h2 style="margin-top: 15px"><?php echo $row['title'];?></h2>
                     <p class="text-muted"><?php echo $genre; ?></p>
                     <hr />
+                    <div class="row">
+                    <div class="col">
                     <p class="text-left" style="padding: 30px"><?php echo $row['shortdesc']; ?></p>
+                    </div>
+                    <div class="col text-center">
+                    <a href="pdf/<?php echo $row['addedby'];?>/<?php echo $row['pdf'];?>" download title="download">
+                        <img src="img/pdfdownload.png" width="50px" />
+                    </a>
+                    </div>
+                    </div>
                 </div>
+                
             </div>
         </div>
             

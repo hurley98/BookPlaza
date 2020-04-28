@@ -7,13 +7,39 @@
         $uid = $_SESSION['user'];
     }
 
+    // For cover images
     $target_dir = "..//images//" . $uid . "//";
+
+    // For PDF
+    $target_dir_pdf = "..//pdf//" . $uid . "//";
 
     if(!is_dir($target_dir))
     {
         // Daca nu exista, creeam una
         mkdir($target_dir, 0755, true);
     }
+
+    if(!is_dir($target_dir_pdf))
+    {
+        mkdir($target_dir_pdf, 0755, true);
+    }
+
+    // PDF
+    $target_file_pdf = $target_dir_pdf . basename($_FILES['fileToUploadPdf']['name']);
+    $pdfFileType = strtolower(pathinfo($target_file_pdf, PATHINFO_EXTENSION));
+
+    // allow cerating file formats
+    $allowTypes = array('pdf', 'doc');
+    if(in_array($pdfFileType, $allowTypes))
+    {
+        // Upload file to the server
+        if(move_uploaded_file($_FILES['fileToUploadPdf']['tmp_name'], $target_file_pdf))
+        {
+            $bookPdf = basename($_FILES['fileToUploadPdf']['name']);
+        }
+    }
+
+    //
 
     $target_file = $target_dir . basename($_FILES['fileToUpload']['name']);
     $uploadOk = 1;
@@ -68,11 +94,12 @@
             //echo "title: " . $_POST['title'];
 
             // Insert image path into database
-            $insertStatement = $conn->prepare("INSERT INTO books(title, coverimage, genre, shortdesc, author, addedby) VALUES (:title, :coverimage, :genre, :description, :author, :addedby)");
+            $insertStatement = $conn->prepare("INSERT INTO books(title, coverimage, genre, pdf, shortdesc, author, addedby) VALUES (:title, :coverimage, :genre, :pdf, :description, :author, :addedby)");
             $insertStatement->execute(array(
                 ':title' => $_POST['title'],
                 ':coverimage' => $bookImage,
                 ':genre' => $_POST['genre'],
+                ':pdf' => $bookPdf,
                 ':description' => $_POST['description'],
                 ':author' => $_POST['author'],
                 ':addedby' => $uid

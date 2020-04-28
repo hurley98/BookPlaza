@@ -42,7 +42,10 @@
                 url: 'Actions/SignUp.php',
                 data: $('#signupform').serialize(),
                 success: (response) => {
-                    alert(response);
+                    if(response == 1)
+                    {
+                        alert('Account created!');
+                    }
                 }
             });
         });
