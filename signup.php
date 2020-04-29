@@ -42,6 +42,14 @@
                 url: 'Actions/SignUp.php',
                 data: $('#signupform').serialize(),
                 success: (response) => {
+                    if(response == 3)
+                    {
+                        alert("Email is already used!");
+                    }
+                    if(response == 4)
+                    {
+                        alert("Username is already used!");
+                    }
                     if(response == 1)
                     {
                         alert('Account created!');

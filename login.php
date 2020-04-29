@@ -29,6 +29,14 @@
                 url: 'Actions/Login.php',
                 data: $('#loginForm').serialize(),
                 success: (response) => {
+                    if(response == 4)
+                    {
+                        alert("Incorrect password!");
+                    }
+                    if(response == 5)
+                    {
+                        alert("Email does not exist!");
+                    }
                     if(response == 1)
                     {
                         location.href = "index";

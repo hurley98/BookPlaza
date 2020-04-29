@@ -14,6 +14,8 @@ class User
     {
         try 
         {
+            // TODO Mesaj daca mail-ul sau username este deja preluat si la Login
+            
             // Verificam daca mail-ul nu exista deja in baza de data, fiind mail-ul unic
             $verifyEmailStatement = $this->db->prepare("SELECT email FROM users WHERE email=:email");
             $verifyEmailStatement->bindParam(':email', $email, PDO::PARAM_STR);
@@ -27,10 +29,12 @@ class User
             if($verifyEmailStatement->rowCount() > 0)
             {
                 // Daca este adevarat, mail-ul exista deja in baza de data
+                echo 3;
                 return false;
             }
-            elseif($verifyUsername->rowCount() > 0)
+            if($verifyUsername->rowCount() > 0)
             {
+                echo 4;
                 return false;
             }
             else
@@ -76,6 +80,16 @@ class User
                         $_SESSION['user'] = $row['id'];
                         return true;
                     }
+                    else
+                    {
+                        echo 4;
+                        return false;
+                    }
+                }
+                else
+                {
+                    echo 5;
+                    return false;
                 }
             } catch(PDOException $e)
             {
