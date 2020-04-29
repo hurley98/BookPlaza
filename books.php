@@ -75,6 +75,9 @@ $uid = $_SESSION['user'];
                                             <label>Description</label>
                                             <textarea class="form-control" name="newShortDesc" placeholder="Enter a new description"><?php echo $book['shortdesc']; ?></textarea>
                                         </div>
+                                        <div class="form-group text-center" id="successEdit" style="display:none">
+                                            <p class="text-success">Edited successfully!</p>
+                                        </div>
                                         <center>
                                             <input type="submit" class="btn btn-info" value="Editeaza"/>
                                         </center>
@@ -92,9 +95,24 @@ $uid = $_SESSION['user'];
                                                 url: 'Actions/editBook.php',
                                                 data: $('#formEdit<?php echo $book['id']; ?>').serialize(),
                                                 success: (response) => {
-                                                    alert(response);
+                                                    $('#successEdit').show();
+                                                    // alert(response);
                                                 }
                                             });
+
+                                            $('.form-control').keypress(() => {
+                                                $('#successEdit').hide();
+                                            });
+
+                                            $('.close').click(() => {
+                                                $('#successEdit').hide();
+                                            });
+
+                                            $('.btn').click(() => {
+                                                $('#successEdit').hide();
+                                            });
+
+
                                         });
                                     });
                                     </script>
@@ -284,7 +302,7 @@ $('select.genres').change(function() {
                 if(response == 1)
                 {
                     // sa apara un model de success!
-                    alert("Success!");
+                    //alert("Success!");
                     $('#addBook').modal('hide');
                     location.reload(true);
                 }

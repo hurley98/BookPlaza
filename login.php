@@ -16,6 +16,50 @@
         </div>
         <p class="text-center">Not a user? <a href="signup">Signup here</a></p>
     </form>
+
+    <!-- Incorrect Password -->
+    <!-- Modal -->
+    <div class="modal fade" id="incorrectPassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title text-danger" id="exampleModalLabel">Error</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body text-center">
+            Incorrect Password, please try again!
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        </div>
+    </div>
+    </div>
+    <!-- Modal -->
+
+    <!-- Email does not exist -->
+    <!-- Modal -->
+    <div class="modal fade" id="incorrectEmail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title text-danger" id="exampleModalLabel">Error</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body text-center">
+            Email does not exists, please try again!
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        </div>
+    </div>
+    </div>
+    <!-- Modal -->
 </div>
 
 <script>
@@ -31,11 +75,13 @@
                 success: (response) => {
                     if(response == 4)
                     {
-                        alert("Incorrect password!");
+                        // alert("Incorrect password!");
+                        $('#incorrectPassword').modal('show');
                     }
                     if(response == 5)
                     {
-                        alert("Email does not exist!");
+                        $('#incorrectEmail').modal('show');
+                        //alert("Email does not exist!");
                     }
                     if(response == 1)
                     {

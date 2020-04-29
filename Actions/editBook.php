@@ -19,6 +19,10 @@
         {
             echo 1;
         }
+        else
+        {
+            echo 2;
+        }
     } catch (PDOException $e)
     {
         echo $e->getMessage();
