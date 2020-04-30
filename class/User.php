@@ -145,14 +145,19 @@ class User
     {
         try
         {
-            $statement = $this->db->prepare("UPDATE usersettings SET darkmode=1 WHERE uid=:uid");
-            $statement->bindParam(':uid', $uid, PDO::PARAM_INT);
-            $statement->execute();
-
-            if($statement->rowCount() > 0)
+            $Selectstatement = $this->db->prepare("SELECT * FROM usersettings WHERE uid=:uid");
+            $Selectstatement->bindParam(':uid', $uid, PDO::PARAM_INT);
+            $Selectstatement->execute();
+            if($Selectstatement->rowCount() > 0)
             {
-                // s-a actualizat
-                return true;
+                $statement = $this->db->prepare("UPDATE usersettings SET darkmode=1 WHERE uid=:uid");
+                $statement->bindParam(':uid', $uid, PDO::PARAM_INT);
+                $statement->execute();
+
+                if($statement->rowCount() > 0)
+                {
+                    return 'succes';
+                }
             }
             else
             {
