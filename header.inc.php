@@ -19,7 +19,7 @@
     <link href="dist/css/darkmode.css" rel="stylesheet"/>
     <title>Book Plaza</title>
   </head>
-  <body class="<?php if($user->isLoggedIn() && $user->darkMode($_SESSION['user'])) { echo "darkmode" ;} ?>">
+  <body class="<?php if($user->isLoggedIn() && $user->isDarkModeEnabled($_SESSION['user'])) { echo "darkmode" ;} ?>">
   <!-- Header -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,7 +37,7 @@
       </li>
       <?php if($user->isLoggedIn()) { ?>
         <li class="nav-item">
-          <?php if($user->darkModeEnabled($_SESSION['user'])) {  ?>
+          <?php if($user->isLoggedIn()) {  ?>
           <a href="#" id="enableDarkmode" class="nav-link">Enable Darkmode</a>
           <?php } else { ?> 
             <a href="#" id="disableDarkmode" class="nav-link">Disable Darkmode</a>

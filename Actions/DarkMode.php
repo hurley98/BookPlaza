@@ -3,7 +3,7 @@
 
     $uid = $_SESSION['user'];
 
-    if($user->enableDarkMode($uid) == 'succes' || $user->enableDarkMode($uid) == true)
+    if($user->toggleDarkMode($uid) == 'succes' || $user->toggleDarkMode($uid) == true)
     {
         echo 1;
     }

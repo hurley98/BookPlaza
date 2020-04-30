@@ -99,30 +99,11 @@ class User
     }
 
     // Dark mode enabled
-    public function darkMode($uid)
+    public function isDarkModeEnabled($uid)
     {
         try
         {
             $statement = $this->db->prepare("SELECT * FROM usersettings WHERE uid=:uid AND darkmode=1");
-            $statement->bindParam(':uid', $uid, PDO::PARAM_INT);
-            $statement->execute();
-
-            if($statement->rowCount() > 0)
-            {
-                return true;
-            }
-        } catch(PDOException $e)
-        {
-            echo $e->getMessage();
-        }
-    }
-
-    // Verify if dark mode is enabled
-    public function darkModeEnabled($uid)
-    {
-        try
-        {
-            $statement = $this->db->prepare("SELECT * FROM usersettings WHERE uid=:uid AND darkmode=0");
             $statement->bindParam(':uid', $uid, PDO::PARAM_INT);
             $statement->execute();
 
@@ -141,23 +122,44 @@ class User
     }
 
     // Enable dark mode
-    public function enableDarkMode($uid)
+    public function toggleDarkMode($uid)
     {
         try
         {
             $Selectstatement = $this->db->prepare("SELECT * FROM usersettings WHERE uid=:uid");
             $Selectstatement->bindParam(':uid', $uid, PDO::PARAM_INT);
             $Selectstatement->execute();
+
             if($Selectstatement->rowCount() > 0)
             {
-                $statement = $this->db->prepare("UPDATE usersettings SET darkmode=1 WHERE uid=:uid");
-                $statement->bindParam(':uid', $uid, PDO::PARAM_INT);
-                $statement->execute();
+                $row = $Selectstatement->fetch(PDO::FETCH_ASSOC);
 
-                if($statement->rowCount() > 0)
+
+                $darkmode = $row['darkmode'];
+
+                if($darkmode == 0)
                 {
-                    return 'succes';
+                    $statement = $this->db->prepare("UPDATE usersettings SET darkmode=1 WHERE uid=:uid");
+                    $statement->bindParam(':uid', $uid, PDO::PARAM_INT);
+                    $statement->execute();
+    
+                    if($statement->rowCount() > 0)
+                    {
+                        return 'succes';
+                    }
                 }
+                else
+                {
+                    $Ustatement = $this->db->prepare("UPDATE usersettings SET darkmode=0 WHERE uid=:uid");
+                    $Ustatement->bindParam(':uid', $uid, PDO::PARAM_INT);
+                    $Ustatement->execute();
+    
+                    if($Ustatement->rowCount() > 0)
+                    {
+                        return 'succes';
+                    }
+                }
+                
             }
             else
             {
@@ -178,25 +180,6 @@ class User
         }
     }
 
-    // disable
-    public function disableDarkMode($uid)
-    {
-        try
-        {
-            $statement = $this->db->prepare("UPDATE usersettings SET darkmode=0 WHERE uid=:uid");
-            $statement->bindParam(':uid', $uid, PDO::PARAM_INT);
-            $statement->execute();
-
-            if($statement->rowCount() > 0)
-            {
-                // s-a actualizat
-                return true;
-            }
-        } catch(PDOException $e)
-        {
-            echo $e->getMessage();
-        }
-    }
 
     // Is Logged in
     public function isLoggedIn()
