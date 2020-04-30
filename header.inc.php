@@ -38,10 +38,8 @@
       <?php if($user->isLoggedIn()) { ?>
         <li class="nav-item">
           <?php if($user->isLoggedIn()) {  ?>
-          <a href="#" id="enableDarkmode" class="nav-link">Enable Darkmode</a>
-          <?php } else { ?> 
-            <a href="#" id="disableDarkmode" class="nav-link">Disable Darkmode</a>
-          <?php } ?>
+          <a href="#" id="enableDarkmode" class="nav-link">Darkmode</a>
+          <?php }  ?> 
         </li>
         <?php } ?>
       <li class="nav-item">
@@ -85,23 +83,5 @@
         }
       });
     });
-
-    $('#disableDarkmode').click((e) => {
-      e.preventDefault();
-
-      $.ajax
-      ({
-        type: 'POST',
-        url: 'Actions/DisableDarkmode.php',
-        cache: false,
-        success: (response) => {
-          if(response == 1)
-          {
-            location.reload(true);
-          }
-        }
-      });
-
-    })
   });
 </script>
