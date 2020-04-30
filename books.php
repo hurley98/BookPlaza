@@ -53,13 +53,13 @@ $uid = $_SESSION['user'];
                         <div class="modal fade" tabindex="-1" role="dialog" id="editM<?php echo $book['id']; ?>">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header <?php if($user->isLoggedIn() && $user->darkMode($_SESSION['user'])) { echo "darkmode" ;} ?>">
                                     <h5 class="modal-title">Editeaza cartea: <?php echo $book['title']; ?></h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <div class="modal-body">
+                                <div class="modal-body <?php if($user->isLoggedIn() && $user->darkMode($_SESSION['user'])) { echo "darkmode" ;} ?>">
                                     <form id="formEdit<?php echo $book['id']; ?>">
                                         <input type="number" name="bookid" value="<?php echo $book['id']; ?>" hidden/>
                                         <div class="form-group">
@@ -117,7 +117,7 @@ $uid = $_SESSION['user'];
                                     });
                                     </script>
                                 </div>
-                                <div class="modal-footer">
+                                <div class="modal-footer <?php if($user->isLoggedIn() && $user->darkMode($_SESSION['user'])) { echo "darkmode" ;} ?>">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 </div>
                                 </div>
@@ -128,13 +128,13 @@ $uid = $_SESSION['user'];
                         <div class="modal fade" id="removeModal<?php echo $book['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
-                            <div class="modal-header">
+                            <div class="modal-header <?php if($user->isLoggedIn() && $user->darkMode($_SESSION['user'])) { echo "darkmode" ;} ?>">
                                 <h5 class="modal-title text-danger" id="exampleModalLabel">Atenție</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-body">
+                            <div class="modal-body <?php if($user->isLoggedIn() && $user->darkMode($_SESSION['user'])) { echo "darkmode" ;} ?>">
                                 <p class="text-center">Ești sigur că vrei să ștergi?</p>
                                 <center>
                                     <input type="text" name="bidBook" id="bookb<?php echo $book['id']; ?>" value="<?php echo $book['id']; ?>" hidden />
@@ -192,13 +192,13 @@ $uid = $_SESSION['user'];
     <div class="modal" id="addBook" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header <?php if($user->isLoggedIn() && $user->darkMode($_SESSION['user'])) { echo "darkmode" ;} ?>">
                 <h5 class="modal-title">Add a New Book</h5>
                 <button type="button" class="close closeButton" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body <?php if($user->isLoggedIn() && $user->darkMode($_SESSION['user'])) { echo "darkmode" ;} ?>">
                 <!-- Form with upload -->
                 <form enctype='multipart/form-data' method="POST" style="width: 80%;" id="uploadForm">
                     <div class="form-group">
@@ -249,7 +249,7 @@ $uid = $_SESSION['user'];
                     </center>
                 </form>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer <?php if($user->isLoggedIn() && $user->darkMode($_SESSION['user'])) { echo "darkmode" ;} ?>">
                 <button type="button" class="btn btn-secondary closeButton" data-dismiss="modal">Close</button>
             </div>
             </div>

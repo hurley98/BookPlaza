@@ -8,16 +8,18 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
     <!-- Datatable -->
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
     
-
+    <!-- Dark mode -->
+    <link href="dist/css/darkmode.css" rel="stylesheet"/>
     <title>Book Plaza</title>
   </head>
-  <body>
+  <body class="<?php if($user->isLoggedIn() && $user->darkMode($_SESSION['user'])) { echo "darkmode" ;} ?>">
   <!-- Header -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,6 +35,15 @@
       <li class="nav-item">
         <a class="nav-link" href="books">Books</a>
       </li>
+      <?php if($user->isLoggedIn()) { ?>
+        <li class="nav-item">
+          <?php if($user->darkModeEnabled($_SESSION['user'])) {  ?>
+          <a href="#" id="enableDarkmode" class="nav-link">Enable Darkmode</a>
+          <?php } else { ?> 
+            <a href="#" id="disableDarkmode" class="nav-link">Disable Darkmode</a>
+          <?php } ?>
+        </li>
+        <?php } ?>
       <li class="nav-item">
         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"><?php echo $user->getUsername(@$_SESSION['user']); ?></a>
       </li>
@@ -52,9 +63,45 @@
   <center>
     <img src="img/loader.gif"/>
   </center>
+  
 </div>
 <script>
   $(document).ready(() => {
     $('.loader').hide();
+
+    $('#enableDarkmode').click((e) => {
+      e.preventDefault();
+
+      $.ajax
+      ({
+        type: 'POST',
+        url: 'Actions/DarkMode.php',
+        cache: false,
+        success: (response) => {
+          if(response == 1)
+          {
+            location.reload(true);
+          }
+        }
+      });
+    });
+
+    $('#disableDarkmode').click((e) => {
+      e.preventDefault();
+
+      $.ajax
+      ({
+        type: 'POST',
+        url: 'Actions/DisableDarkmode.php',
+        cache: false,
+        success: (response) => {
+          if(response == 1)
+          {
+            location.reload(true);
+          }
+        }
+      });
+
+    })
   });
 </script>
